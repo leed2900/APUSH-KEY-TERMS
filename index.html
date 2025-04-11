@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APUSH Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      padding: 0.6rem;
+      font-size: 1rem;
+      width: 100%;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .feedback {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>AP U.S. History Quiz</h1>
+    <p id="definition">Loading...</p>
+    <input type="text" id="answer" placeholder="Enter the correct term" />
+    <button onclick="submitAnswer()">Submit</button>
+    <div class="feedback" id="feedback"></div>
+    <div id="scoreBox"></div>
+  </div>
+
+  <script>
+    const terms = {
+      "Jacob Riis": "A Danish-American journalist and social reformer whose work 'How the Other Half Lives' exposed poor urban living conditions. His work influenced housing reforms during the Progressive Era.",
+      "Mass Transit": "Public transportation systems that emerged in urban areas, enabling city expansion and commuting. Mass transit shaped the growth and layout of modern cities.",
+      "Tenements": "Overcrowded, poorly built apartment buildings for urban poor and immigrants. Symbolized poverty and led to housing reform.",
+      "Assimilation": "The process where immigrants adopt American culture. It reflected American identity struggles and impacted immigrant communities.",
+      "Department Stores": "Large urban retail centers selling diverse goods. They revolutionized consumer culture and reflected economic growth.",
+      "Tammany Hall": "A powerful NYC political machine known for corruption and patronage. It highlighted the need for political reform.",
+      "Upton Sinclair": "Muckraker who exposed meat industry horrors in 'The Jungle'. His work led to food safety laws like the Meat Inspection Act.",
+      "Yellow Journalism": "Sensationalist news reporting to attract readers. Influenced U.S. involvement in the Spanish-American War.",
+      "Social Realism": "Artistic movement depicting working-class life and social issues. Supported reform and exposed urban struggles.",
+      "Alice Hamilton": "Physician who studied industrial diseases. Her work improved workplace safety and labor rights.",
+      "Modernism": "Artistic and cultural movement rejecting tradition. Reflected modern industrial life and reshaped American culture.",
+      "Newspaper Chains": "Corporations owning multiple newspapers, unifying content. Helped create a national culture and influenced public opinion.",
+      "Women's College": "Higher education institutions for women. Expanded women's roles and supported the women's rights movement.",
+      "Half Breeds": "Republican Party faction supporting civil service reform. Clashed with Stalwarts over corruption and patronage.",
+      "Populism": "Movement of farmers/laborers seeking reform like free silver. Influenced Progressivism and opposed elite interests.",
+      "The Grange": "Farmers’ group promoting cooperation and fighting rail monopolies. Precursor to the Populist movement.",
+      "Sherman Antitrust Act": "1890 law against monopolies. Early step in regulating big business and used in Progressive reforms.",
+      "Imperialism": "Policy of extending national power overseas. Led to U.S. control of territories and global influence.",
+      "Hawaii": "Annexed U.S. territory after monarchy’s overthrow in 1898. Key for U.S. naval power in the Pacific.",
+      "Free Silver": "Movement for unlimited silver coinage to help debtors. Central issue in 1890s politics, especially for farmers.",
+      "Boxer Rebellion": "1900 anti-foreigner uprising in China. U.S. helped suppress it and pushed for Open Door Policy.",
+      "Cuban Revolt": "Uprising against Spanish rule in Cuba. U.S. sympathy and yellow journalism helped spark the Spanish-American War.",
+      "Anti-Imperialist League": "Group opposing U.S. imperialism and annexation of Philippines. Challenged imperialism as anti-democratic.",
+      "Mary E. Lease": "Populist orator urging farmers to protest economic inequality. Symbol of agrarian activism and reform.",
+      "Panic of 1893": "Severe depression from railroad and bank failures. Led to Populist momentum and monetary reform demands.",
+      "Open Door Policy": "U.S. policy for equal trade in China. Aimed to prevent European dominance and keep markets open.",
+      "Interstate Commerce Act": "1887 law regulating railroads and establishing the ICC. First major attempt to regulate big business.",
+      "Pendleton Act": "1883 law establishing merit-based civil service. Reduced corruption and weakened the spoils system.",
+      "William McKinley": "25th president, led U.S. in Spanish-American War. Supported tariffs, gold standard, and imperialism.",
+      "Spanish-American War": "1898 conflict giving U.S. control of Spanish colonies. Marked U.S. rise as an imperial power.",
+      "Pearl Harbor": "U.S. naval base in Hawaii attacked by Japan on December 7, 1941. The attack led directly to U.S. entry into World War II and marked a turning point in American foreign policy.",
+      "Queen Liliuokalani": "Last monarch of Hawaii who opposed U.S. annexation and sought to restore native power. Her overthrow in 1893 symbolized the U.S. shift toward imperialism in the Pacific.",
+      "Purchase of Alaska": "1867 acquisition of Alaska from Russia by Secretary of State William Seward. Initially mocked as 'Seward’s Folly,' it later proved valuable for resources and expanded U.S. territory."
+    };
+
+    const entries = Object.entries(terms).sort(() => Math.random() - 0.5);
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      if (current < entries.length) {
+        document.getElementById('definition').textContent = entries[current][1];
+        document.getElementById('answer').value = '';
+        document.getElementById('answer').focus();
+      } else {
+        document.getElementById('definition').textContent = 'Quiz Complete!';
+        document.getElementById('answer').style.display = 'none';
+        document.querySelector('button').style.display = 'none';
+        document.getElementById('scoreBox').textContent = `Final Score: ${score} / ${entries.length}`;
+      }
+    }
+
+    function submitAnswer() {
+      const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+      const correctAnswer = entries[current][0].toLowerCase();
+      const feedback = document.getElementById('feedback');
+
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = 'Correct!';
+        feedback.style.color = 'green';
+        score++;
+      } else {
+        feedback.textContent = `Incorrect. The correct answer was: ${entries[current][0]}`;
+        feedback.style.color = 'red';
+      }
+
+      current++;
+      setTimeout(() => {
+        feedback.textContent = '';
+        showQuestion();
+      }, 2000);
+    }
+
+    window.onload = showQuestion;
+  </script>
+</body>
+</html>
